@@ -1,33 +1,26 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { CategoryService } from './category.service';
 import { CategoryController } from './category.controller';
-import { Category, CategorySchema } from './schemas/category.schema';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Category,CategorySchema } from './schemas/category.schema';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    // MongooseModule.forFeature([
-    //   { name: Category.name, schema: CategorySchema },
-    // ]),
-    MongooseModule.forRootAsync({
-      imports:[ConfigModule],
-        inject:[ConfigService],
-        useFactory:(config:ConfigService)=>(
-        {
-          uri: config.get<string>('MONGO_URI'),
-          useNewUrlParser:true,
-          useUnifiedTopology:true
-        }
-      ) ,
-      
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: 'apps/category/.env',
     }),
-    MongooseModule.forFeature([
-      { name: Category.name, schema: CategorySchema },
-    ]),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService) => ({
+        uri: config.get<string>('MONGO_URI'),
+      }),
+    }),
+    MongooseModule.forFeature([{ name: Category.name, schema: CategorySchema }]),
   ],
   providers: [CategoryService],
   controllers: [CategoryController],
-  exports: [CategoryService], // optional, if used in other modules
 })
 export class CategoryModule {}

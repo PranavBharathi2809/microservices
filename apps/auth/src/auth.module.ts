@@ -7,9 +7,19 @@ import { ConfigModule,ConfigService } from '@nestjs/config';
 import { JwtStartegy } from './strategies/jwt.strategy';
 import { ClientsModule } from '@nestjs/microservices';
 import { Transport } from '@nestjs/microservices';
-import config from "process"
+import config from "process";
+import { PassportModule } from '@nestjs/passport';
 @Module({
-  imports:[ClientsModule.registerAsync([
+  imports:[
+   
+     ConfigModule.forRoot({
+            isGlobal: true,
+            envFilePath: 'apps/auth/.env',
+        }),
+
+
+    
+    ClientsModule.registerAsync([
      {
       name:"USER_SERVICE",
       imports:[ConfigModule],
@@ -18,7 +28,7 @@ import config from "process"
 
         transport: Transport.TCP,
         options:{
-          host: config.get<string>('USER_SERVICES_HOST'),
+          host: config.get<string>('USER_SERVICE_HOST'),
           port: config.get<number>('USER_SERVICE_PORT')
         }
       }
@@ -27,6 +37,7 @@ import config from "process"
       
      }
   ]),
+      PassportModule.register({ defaultStrategy: 'jwt' }),
  JwtModule.registerAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
@@ -45,6 +56,6 @@ import config from "process"
 ],
   exports:[AuthService],
   controllers: [AuthController],
-  providers: [AuthService]
+  providers: [AuthService, JwtStartegy]
 })
 export class AuthModule {}

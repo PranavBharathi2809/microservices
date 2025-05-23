@@ -1,37 +1,32 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+//We are combining Union types of Product and MongoDB document using mongo urm
 
 export type ProductDocument = Product & Document;
-
+//Creating Schema using Schema Decorator and asking Schema to have an option of timestamps when creating the document
 @Schema({ timestamps: true })
 export class Product {
-
+  //Using Prop() decorator for validation, used for MongoDB validation for the Mongo Schema
   @Prop({ required: true })
   name: string;
-
-  @Prop({ required: true })
-  category: string;
-
-  @Prop({ required: true })
-  brand: string;
-
-   @Prop()
-   price: number;
-
-  // @Prop({ type: [String], required: true })
-  // size: string[];
-
-  @Prop({ required: true })
-  color: string;
-
-   @Prop()
-   inStock: boolean;
-
-  @Prop(/*{ required: true }*/)
-  pimg: string;
+  
+  @Prop()
+  cat: string;
 
   @Prop()
-  description: string;
-}
+  brand: string;
 
+  @Prop()
+  color: string;
+
+  @Prop()
+  price: string;
+
+  @Prop()
+  desc: string;
+
+  @Prop()
+  pimg: string;
+}
+// class being forwarded for MongoDB as a collection through Mongoose Schema
 export const ProductSchema = SchemaFactory.createForClass(Product);

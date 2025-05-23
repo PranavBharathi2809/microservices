@@ -5,13 +5,13 @@ import { ConfigModule } from '@nestjs/config';
 import { ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from 'apps/user/src/users.module';
-
+import { ProductsModule } from 'apps/product/src/product.module';
 @Module({
 
 imports:[
     ConfigModule.forRoot({isGlobal:true}),
     MongooseModule.forRootAsync({
-      imports:[ConfigModule],
+      imports:[ConfigModule,ProductsModule],
       inject:[ConfigService],
       useFactory: async (config:ConfigService)=> ({
  

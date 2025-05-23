@@ -19,6 +19,8 @@ export class JwtStartegy extends PassportStrategy(Strategy) {
             secretOrKey: secret_key|| 'fallback_secret'
         })
     }
-    async validate(payload:any){return {Email:payload.Email,role:payload.role}}
+    async validate(payload:any){
+         console.log('JWT validated payload:', payload);
+        return {Email:payload.Email,role:payload.role}}
 
 }

@@ -84,4 +84,11 @@ export class AuthService {
             }
         }
     }
+
+     async validatePayload(payload: any) {
+    return {
+      emailid: payload.emailid,
+      role: payload.role,
+    }
+  }
 }
