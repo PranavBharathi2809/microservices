@@ -6,7 +6,7 @@ import { UserSchema, User} from './schemas/user.schema';
 import { ConfigModule, ConfigService } from '@nestjs/config';
  @Module({
      imports: [
-        ConfigModule.forRoot({ isGlobal: true }),
+        ConfigModule.forRoot({ isGlobal: true,  envFilePath: 'apps/user/.env' }),
         MongooseModule.forRootAsync({
             imports: [ConfigModule],
             inject: [ConfigService],

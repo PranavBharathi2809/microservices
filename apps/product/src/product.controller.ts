@@ -1,4 +1,4 @@
-import { Controller, Post,Put, Body, UploadedFile, UseInterceptors, Get, Param,Delete } from '@nestjs/common';
+import { Controller, Post,Put, Body,UseGuards, UploadedFile, UseInterceptors, Get, Param,Delete } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Inject } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -8,6 +8,9 @@ import { multerConfig } from './multer.config';
 import { ProductsService } from './product.service';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { JwtAuthGuard } from 'apps/common/guards/jwt-auth.guard';
+import { RolesGuard } from 'apps/common/guards/roles.guard';
+import { Roles } from 'apps/common/decorators/roles.decorator';
 
 // We are using Controller Decorator to control the services of the application.
 @Controller('products')
@@ -29,6 +32,9 @@ export class ProductsGatewayController {
       }
     })
   }))
+
+   @UseGuards(JwtAuthGuard, RolesGuard)
+   @Roles('admin','customer')
   async addProduct(@Body() body: AddProductDto, @UploadedFile() file: Express.Multer.File) {
     const filename = file?.filename || '';
     return this.productService.addProduct(body, file);

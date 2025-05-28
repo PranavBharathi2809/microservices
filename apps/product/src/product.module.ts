@@ -6,12 +6,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Product, ProductSchema } from './schemas/product.schema';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProductsGatewayController } from './product.controller';
-
+import { AuthModule } from 'apps/auth/src/auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: 'apps/products/.env'
+      envFilePath: 'apps/product/.env'
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -43,7 +43,7 @@ import { ProductsGatewayController } from './product.controller';
       
      }
   ]),
-
+    AuthModule,
   ],
   controllers: [ProductsGatewayController],
   providers: [ProductsService],

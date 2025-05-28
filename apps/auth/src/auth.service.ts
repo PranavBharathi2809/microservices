@@ -1,4 +1,4 @@
-import { Inject,Module, UnauthorizedException } from '@nestjs/common';
+import { Inject,Module, UnauthorizedException,BadRequestException } from '@nestjs/common';
 import { Injectable,ConflictException } from '@nestjs/common';
 import { UsersService } from 'apps/user/src/users.service';
 import { registerDbo } from './dbo/register.dbo';
@@ -26,6 +26,10 @@ export class AuthService {
     //     })
     // }
     async register(registerDbo: registerDbo){
+
+        if (!registerDbo) {
+    throw new BadRequestException('No data provided');
+  }
         const {Name, Email,Password,role}  = registerDbo
 
         const existingUser = await firstValueFrom(
