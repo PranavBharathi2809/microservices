@@ -35,6 +35,11 @@ export class UsersService {
         return newUser.save()
     }
 
+
+    //get all users
+    async getall(): Promise<User[]> {
+        return this.userModel.find().exec();
+    }
     //async – Marks this method as asynchronous, so you can use await inside it.
     //updateById(...) – This function updates a user in the database by their ID.
     //id: string – This is the unique MongoDB document ID you want to update.

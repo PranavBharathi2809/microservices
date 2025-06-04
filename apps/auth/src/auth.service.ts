@@ -52,7 +52,7 @@ export class AuthService {
         //  const user = await this.userService.create({
         //    Name,Email,Password:hashedPassword,role,
         // })
-        return {message:'User registered Successfully',user:{Name:user.Name, Email:user.Email}}
+        return {message:'User registered Successfully',user:{Name:user.Name, Email:user.Email,role:user.role}}
     }
 
     async login (loginDto:loginDto){
@@ -84,7 +84,8 @@ export class AuthService {
             accessToken:token,
             user:{
             Name:user?.Name, 
-            Email:user?.Email
+            Email:user?.Email,
+            role:user?.role
             }
         }
     }

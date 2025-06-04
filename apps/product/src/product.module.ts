@@ -7,6 +7,8 @@ import { Product, ProductSchema } from './schemas/product.schema';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProductsGatewayController } from './product.controller';
 import { AuthModule } from 'apps/auth/src/auth.module';
+import { JwtAuthGuard } from 'apps/common/guards/jwt-auth.guard';
+import { RolesGuard } from 'apps/common/guards/roles.guard';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -46,6 +48,7 @@ import { AuthModule } from 'apps/auth/src/auth.module';
     AuthModule,
   ],
   controllers: [ProductsGatewayController],
-  providers: [ProductsService],
+  providers: [ProductsService, /*RolesGuard,*/
+    /* JwtAuthGuard*/],
 })
 export class ProductsModule { }

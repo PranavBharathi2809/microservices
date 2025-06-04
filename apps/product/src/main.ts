@@ -3,11 +3,14 @@ import { ProductsModule } from "./product.module";
 import { MicroserviceOptions, Transport } from "@nestjs/microservices";
 import { ConfigService } from "@nestjs/config";
 import { Post } from "@nestjs/common";
+import { join } from "path";
+import { NestExpressApplication } from "@nestjs/platform-express";
 
 async function bootstrap() {
   //HTTP communication between Postman and product
   //this is the http layer
-  const app = await NestFactory.create(ProductsModule)
+  // const app = await NestFactory.create(ProductsModule)
+  const app = await NestFactory.create<NestExpressApplication>(ProductsModule);
 
   app.enableCors({
     origin: '*',
@@ -33,6 +36,11 @@ async function bootstrap() {
       port: tcpPort
     }
   })
+
+  app.useStaticAssets(join(process.cwd(), "prodimgs"), {
+  prefix: "/prodimgs/",
+});
+
 
   //Start TCP microservice
   await app.startAllMicroservices()

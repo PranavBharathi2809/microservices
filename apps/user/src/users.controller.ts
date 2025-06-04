@@ -47,6 +47,12 @@ export class UserController {
     return this.userService.findbyEmail(Email);
   }
 
+
+   @Get()
+  async getAll(): Promise<User[]> {
+    return this.userService.getall();
+  }
+
   //@Put(':id')
   @MessagePattern({ cmd: 'updating' })
   update(@Param('id') id: string, @Body() updateData: Partial<User>) {

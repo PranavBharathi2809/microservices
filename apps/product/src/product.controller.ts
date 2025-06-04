@@ -11,6 +11,7 @@ import { extname } from 'path';
 import { JwtAuthGuard } from 'apps/common/guards/jwt-auth.guard';
 import { RolesGuard } from 'apps/common/guards/roles.guard';
 import { Roles } from 'apps/common/decorators/roles.decorator';
+import { AuthGuard } from '@nestjs/passport';
 
 // We are using Controller Decorator to control the services of the application.
 @Controller('products')
@@ -33,17 +34,27 @@ export class ProductsGatewayController {
     })
   }))
 
-   @UseGuards(JwtAuthGuard, RolesGuard)
-   @Roles('admin','customer')
+  //  @UseGuards(JwtAuthGuard, RolesGuard)
+  //  @Roles('admin','customer')
   async addProduct(@Body() body: AddProductDto, @UploadedFile() file: Express.Multer.File) {
     const filename = file?.filename || '';
     return this.productService.addProduct(body, file);
   }
 
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  //  @Roles('admin','customer')
   // @Get("getAllProducts")
   @Get()
   async getAllProducts() {
     return this.productService.getAllProducts();
+  }
+
+  
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles('admin', 'customer')
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.productService.findOne(id);
   }
 
   //update

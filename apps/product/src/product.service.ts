@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, Inject, } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, Inject,NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AddProductDto } from './dto/add-product.dto';
@@ -57,6 +57,17 @@ export class ProductsService {
     throw new InternalServerErrorException('Could not retrieve products');
   }
 }
+
+
+   async findOne(id: string): Promise<Product> {
+    const product = await this.productModel.findById(id).exec();
+    if (!product) {
+      throw new NotFoundException(`Product with ID ${id} not found`);
+    }
+    return product;
+  }
+
+
 
 async updateProduct(id: string, updateData: Partial<Omit<Product, 'pimg'>>) {
   try {
