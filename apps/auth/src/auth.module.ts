@@ -9,6 +9,11 @@ import { ClientsModule } from '@nestjs/microservices';
 import { Transport } from '@nestjs/microservices';
 import config from "process";
 import { PassportModule } from '@nestjs/passport';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { join } from "path";
+import { HandlebarsAdapter } from "@nestjs-modules/mailer/dist/adapters/handlebars.adapter"
+
+
 @Module({
   imports:[
    
@@ -50,9 +55,30 @@ import { PassportModule } from '@nestjs/passport';
                 };
             }
 
+        }),
+     
+    // NodeMailer
+        MailerModule.forRoot({
+            transport: {
+                host: "smtp.gmail.com",
+                //   port: 587,
+                secure: true, // true for port 465, false for other ports
+                auth: {
+                    user : "m.pranavbharathi@gmail.com",
+                    pass : "eahekviaeficlrgy"
+                },
+            },
+            defaults: {
+                from: "No Reply <no-reply@example.com>"
+            },
+            template: {
+                dir: join(__dirname, '..', 'templates'),
+                adapter: new HandlebarsAdapter(),
+                options: {
+                    strict: true
+                }
+            }
         })
-
-
 ],
   exports:[AuthService,JwtStartegy],
   controllers: [AuthController],

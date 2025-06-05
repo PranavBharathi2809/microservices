@@ -84,4 +84,17 @@ export class UsersService {
     return { message: `${result.deletedCount} user(s) deleted successfully` };
   }
     
+
+  // update password by email
+async updatePassword(payload: { email: string; password: string }) {
+  const { email, password } = payload;
+
+  return this.userModel.findOneAndUpdate(
+    { Email: email }, // Ensure your field name is correct, case-sensitive
+    { Password: password }, // Match your DB field names (e.g., capital `Password`)
+    { new: true }
+  );
+}
+
+
 }

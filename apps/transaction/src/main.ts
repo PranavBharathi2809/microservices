@@ -8,8 +8,7 @@ async function bootstrap() {
 
    // ✅ Fix for CORS issue
   app.enableCors({
-    origin: 'http://localhost:4000', // Frontend origin
-    credentials: true,
+    origin: '*'
   });
   const PORT = process.env.TRANSACTION_PORT || 4005;
   await app.listen(PORT);

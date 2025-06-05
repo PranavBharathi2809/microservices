@@ -72,4 +72,11 @@ export class UserController {
   deleteAll() {
     return this.userService.deleteAll();
   }
+
+  @MessagePattern({ cmd: 'update-password' })
+async handleUpdatePassword(@Payload() payload: { email: string; password: string }) {
+  return this.userService.updatePassword(payload);
+}
+
+
 }

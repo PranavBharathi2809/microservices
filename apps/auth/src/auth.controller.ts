@@ -5,6 +5,8 @@ import { loginDto } from './dbo/login.dto';
 import { Roles } from 'apps/common/decorators/roles.decorator';
 import { RolesGuard } from 'apps/common/guards/roles.guard';
 import { JwtAuthGuard } from 'apps/common/guards/jwt-auth.guard';
+import { ForgotPasswordDto } from './dbo/forgotPassword.dto';
+import { ResetPasswordDto } from './dbo/resetPassword.dto';
 @Controller('auth')
 export class AuthController {
 
@@ -25,5 +27,18 @@ login(@Body() dto:loginDto)
  @Post('validate')
     async validateToken(@Body('payload') payload: any) {
     return this.authService.validatePayload(payload);
+  }
+
+   @Post('forgot-password')
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    return this.authService.sendResetLink(forgotPasswordDto);
+  }
+
+  @Post('reset-password')
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    return this.authService.resetPassword(
+      resetPasswordDto.token,
+      resetPasswordDto.newPassword,
+    );
   }
 }
